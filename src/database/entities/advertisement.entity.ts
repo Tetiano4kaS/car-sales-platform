@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -16,10 +17,16 @@ export class AdEntity {
   id: string;
 
   @Column()
+  title: string;
+
+  @Column()
   brand: string;
 
   @Column()
   model: string;
+
+  @Column()
+  year: number;
 
   @Column('float')
   price: number;
@@ -27,13 +34,13 @@ export class AdEntity {
   @Column()
   currency: string; // USD, EUR, UAH
 
-  @Column()
+  @Column('float')
   convertedPriceUSD: number;
 
-  @Column()
+  @Column('float')
   convertedPriceEUR: number;
 
-  @Column()
+  @Column('float')
   convertedPriceUAH: number;
 
   @Column({ default: 'draft' })
@@ -41,6 +48,20 @@ export class AdEntity {
 
   @Column({ default: 0 })
   editAttempts: number;
+
+  @Column({ default: 0 })
+  views: number;
+
+  @Column('simple-json', { nullable: true })
+  viewsByPeriod: {
+    daily: number;
+    weekly: number;
+    monthly: number;
+  };
+
+  @Index()
+  @Column()
+  region: string;
 
   @ManyToOne(() => UserEntity, (user) => user.ads)
   user: UserEntity;
